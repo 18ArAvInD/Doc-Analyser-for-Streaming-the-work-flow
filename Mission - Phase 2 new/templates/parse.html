@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parsed Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #content {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <h1>Parsed Document</h1>
+    
+    {% if extracted_sections %}
+        {% for section, content in extracted_sections.items() %}
+            <div id="{{ section }}">
+                <h3>{{ section }}</h3>
+                <div>{{ content | safe }}</div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No content available.</p>
+    {% endif %}
+
+    <div style="text-align: center;">
+        <!-- Button to download the parsed content -->
+        <button type="button" onclick="downloadParsedContent()">Download Parsed Content</button>
+    </div>
+    
+    <script>
+        function downloadParsedContent() {
+            var parsedContent = document.getElementById("content").innerText;
+            var blob = new Blob([parsedContent], { type: "text/plain" });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "parsed_content.txt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
